@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ניהול זמינות · צימר מעלה עמוס</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&family=Frank+Ruhl+Libre:wght@400;700;900&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --c-dark: #1a110a;
+  --c-brown: #4a3728;
+  --c-brown-soft: #6b5240;
+  --c-cream: #faf5ec;
+  --c-cream-2: #f4ecda;
+  --c-gold: #bf955b;
+  --c-gold-dark: #8a6938;
+  --c-gold-light: #d9b787;
+  --c-white: #fff;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Assistant', system-ui, sans-serif;
+  background: var(--c-cream);
+  color: var(--c-brown);
+  min-height: 100vh;
+  padding: 28px;
+  line-height: 1.6;
+}
+.container { max-width: 1100px; margin: 0 auto; }
+header { text-align: center; margin-bottom: 32px; }
+.eyebrow {
+  display: inline-block;
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  color: var(--c-gold);
+  letter-spacing: 0.4em;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+h1 {
+  font-family: 'Frank Ruhl Libre', serif;
+  font-size: clamp(32px, 5vw, 48px);
+  color: var(--c-dark);
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+.lead { color: var(--c-brown-soft); }
+.login-screen, .admin-screen { background: var(--c-white); border-radius: 24px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+.admin-screen { display: none; }
+.login-form { display: grid; gap: 16px; max-width: 420px; margin: 32px auto; }
+.login-form label { display: grid; gap: 6px; font-weight: 600; color: var(--c-brown); font-size: 14px; }
+input, select, textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid rgba(191, 149, 91, 0.25);
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 15px;
+  background: var(--c-cream);
+  color: var(--c-dark);
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--c-gold);
+  box-shadow: 0 0 0 4px rgba(191, 149, 91, 0.15);
+}
+.btn {
+  background: var(--c-gold);
+  color: var(--c-white);
+  border: none;
+  padding: 14px 28px;
+  border-radius: 100px;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.btn:hover { background: var(--c-gold-dark); transform: translateY(-2px); }
+.btn-sm { padding: 8px 16px; font-size: 13px; }
+.btn-outline {
+  background: transparent;
+  border: 1.5px solid var(--c-brown);
+  color: var(--c-brown);
+}
+.btn-outline:hover { background: var(--c-brown); color: var(--c-white); }
+.weeks-list { display: grid; gap: 12px; margin-top: 28px; }
+.week-row {
+  background: var(--c-cream);
+  border: 1.5px solid rgba(191, 149, 91, 0.18);
+  border-radius: 16px;
+  padding: 18px 24px;
+  display: grid;
+  grid-template-columns: 100px 180px 1fr 140px 100px;
+  gap: 16px;
+  align-items: center;
+}
+.week-row.available { border-left: 5px solid #6db577; border-left-style: solid; }
+.week-row.booked { border-left: 5px solid #c25450; }
+.week-row.pending { border-left: 5px solid #d4a04a; }
+.week-date {
+  font-family: 'Frank Ruhl Libre', serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--c-dark);
+}
+.week-parsha {
+  font-family: 'Frank Ruhl Libre', serif;
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--c-brown-soft);
+}
+.week-note input { font-size: 14px; padding: 8px 12px; }
+.week-status select { padding: 8px 12px; font-size: 14px; cursor: pointer; }
+.delete-btn {
+  background: transparent;
+  border: 1.5px solid #c25450;
+  color: #c25450;
+  font-size: 13px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.delete-btn:hover { background: #c25450; color: var(--c-white); }
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(191, 149, 91, 0.15);
+}
+.toolbar h2 { font-family: 'Frank Ruhl Libre', serif; font-size: 22px; color: var(--c-dark); }
+.status-msg { padding: 12px 18px; border-radius: 10px; margin: 16px 0; font-weight: 500; }
+.status-success { background: rgba(109,181,119,0.15); color: #2e6b3a; }
+.status-error { background: rgba(194,84,80,0.15); color: #8b2e2a; }
+.status-info { background: rgba(212,160,74,0.15); color: #7a5a1e; }
+.add-form {
+  background: var(--c-cream);
+  padding: 20px;
+  border-radius: 16px;
+  margin-bottom: 28px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 12px;
+  align-items: end;
+}
+.help-text { font-size: 13px; color: var(--c-brown-soft); margin-top: 8px; line-height: 1.5; }
+.help-text a { color: var(--c-gold-dark); }
+.token-row { display: flex; gap: 8px; align-items: center; margin-top: 16px; font-size: 13px; }
+@media (max-width: 720px) {
+  .week-row { grid-template-columns: 1fr 1fr; gap: 8px; padding: 14px; }
+  .add-form { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <span class="eyebrow">Admin Dashboard</span>
+  <h1>ניהול זמינות שבתות</h1>
+  <p class="lead">צימר מעלה עמוס · עורך זמינות באתר</p>
+</header>
+
+<!-- Login Screen -->
+<div class="login-screen" id="loginScreen">
+  <h2 style="font-family:'Frank Ruhl Libre',serif;font-size:24px;color:var(--c-dark);margin-bottom:8px;">התחברות</h2>
+  <p class="help-text">דרוש GitHub Personal Access Token (PAT) עם הרשאות repo.</p>
+
+  <form class="login-form" id="loginForm">
+    <label>
+      <span>GitHub PAT</span>
+      <input type="password" id="pat" placeholder="ghp_xxxx..." required autocomplete="off">
+    </label>
+    <button type="submit" class="btn">התחבר</button>
+  </form>
+
+  <div class="help-text">
+    <p><strong>איך משיגים PAT?</strong></p>
+    <ol style="padding-inline-start: 20px;">
+      <li>פתח <a href="https://github.com/settings/tokens/new?scopes=repo&description=zimmer-admin" target="_blank">GitHub PAT</a></li>
+      <li>סמן <code>repo</code> בלבד</li>
+      <li>צור והעתק את הטוקן</li>
+      <li>הדבק כאן - יישמר רק בדפדפן שלך (localStorage)</li>
+    </ol>
+  </div>
+</div>
+
+<!-- Admin Screen -->
+<div class="admin-screen" id="adminScreen">
+  <div class="toolbar">
+    <h2>שבתות הקרובות</h2>
+    <button class="btn btn-outline btn-sm" onclick="logout()">יציאה</button>
+  </div>
+
+  <div id="statusMsg"></div>
+
+  <form class="add-form" id="addForm">
+    <label>
+      <span style="font-size:13px;font-weight:600;display:block;margin-bottom:4px;">תאריך שישי</span>
+      <input type="date" id="newDate" required>
+    </label>
+    <label>
+      <span style="font-size:13px;font-weight:600;display:block;margin-bottom:4px;">פרשה</span>
+      <input type="text" id="newParsha" placeholder="במדבר" required>
+    </label>
+    <label>
+      <span style="font-size:13px;font-weight:600;display:block;margin-bottom:4px;">הערה</span>
+      <input type="text" id="newNote" placeholder="(לא חובה)">
+    </label>
+    <button type="submit" class="btn btn-sm">+ הוסף שבת</button>
+  </form>
+
+  <div class="weeks-list" id="weeksList"></div>
+
+  <div class="toolbar" style="margin-top: 28px; border-top: 1px solid rgba(191, 149, 91, 0.15); border-bottom: none; padding-top: 16px;">
+    <p style="font-size:13px;color:var(--c-brown-soft);">שינויים נשמרים אוטומטית ב-GitHub עם push commit.</p>
+    <button class="btn" id="saveBtn">שמור שינויים</button>
+  </div>
+</div>
+
+</div>
+
+<script>
+const REPO = 'maale-amos/zimmer-maale-amos';
+const FILE = 'availability.json';
+const BRANCH = 'main';
+let TOKEN = localStorage.getItem('zimmer_admin_pat') || '';
+let weeksData = null;
+let fileSha = null;
+
+if (TOKEN) showAdmin();
+
+document.getElementById('loginForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  TOKEN = document.getElementById('pat').value.trim();
+  localStorage.setItem('zimmer_admin_pat', TOKEN);
+  await showAdmin();
+});
+
+function logout() {
+  localStorage.removeItem('zimmer_admin_pat');
+  TOKEN = '';
+  document.getElementById('loginScreen').style.display = 'block';
+  document.getElementById('adminScreen').style.display = 'none';
+}
+
+async function showAdmin() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('adminScreen').style.display = 'block';
+  await loadFile();
+}
+
+async function loadFile() {
+  showStatus('טוען...', 'info');
+  try {
+    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE}?ref=${BRANCH}`, {
+      headers: { 'Authorization': `Bearer ${TOKEN}`, 'Accept': 'application/vnd.github.v3+json' },
+    });
+    if (!res.ok) {
+      if (res.status === 401) {
+        showStatus('Token לא תקף - הכנס PAT חדש', 'error');
+        logout();
+        return;
+      }
+      throw new Error(`HTTP ${res.status}`);
+    }
+    const data = await res.json();
+    fileSha = data.sha;
+    const decoded = decodeURIComponent(escape(atob(data.content)));
+    weeksData = JSON.parse(decoded);
+    renderList();
+    showStatus(`נטענו ${weeksData.weeks.length} שבתות`, 'success');
+  } catch (e) {
+    showStatus('שגיאה בטעינה: ' + e.message, 'error');
+  }
+}
+
+function renderList() {
+  const list = document.getElementById('weeksList');
+  const today = new Date().toISOString().slice(0, 10);
+  weeksData.weeks.sort((a, b) => a.friday_date.localeCompare(b.friday_date));
+  list.innerHTML = weeksData.weeks.map((w, i) => `
+    <div class="week-row ${w.status}">
+      <div class="week-date">${w.friday_date.split('-').reverse().join('/')}</div>
+      <div class="week-parsha">${w.parsha}</div>
+      <div class="week-note"><input type="text" value="${(w.note || '').replace(/"/g, '&quot;')}" placeholder="הערה" data-idx="${i}" data-field="note"></div>
+      <div class="week-status">
+        <select data-idx="${i}" data-field="status">
+          <option value="available" ${w.status === 'available' ? 'selected' : ''}>פנוי</option>
+          <option value="booked" ${w.status === 'booked' ? 'selected' : ''}>תפוס</option>
+          <option value="pending" ${w.status === 'pending' ? 'selected' : ''}>בבדיקה</option>
+        </select>
+      </div>
+      <button class="delete-btn" onclick="deleteWeek(${i})">מחק</button>
+    </div>
+  `).join('');
+
+  list.querySelectorAll('input, select').forEach(el => {
+    el.addEventListener('change', e => {
+      const idx = parseInt(e.target.dataset.idx);
+      const field = e.target.dataset.field;
+      weeksData.weeks[idx][field] = e.target.value;
+      renderList();
+    });
+  });
+}
+
+function deleteWeek(idx) {
+  if (!confirm('למחוק את השבת הזו?')) return;
+  weeksData.weeks.splice(idx, 1);
+  renderList();
+}
+
+document.getElementById('addForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const date = document.getElementById('newDate').value;
+  const parsha = document.getElementById('newParsha').value.trim();
+  const note = document.getElementById('newNote').value.trim();
+  if (!date || !parsha) return;
+  weeksData.weeks.push({ friday_date: date, parsha, status: 'available', note });
+  renderList();
+  document.getElementById('addForm').reset();
+});
+
+document.getElementById('saveBtn').addEventListener('click', async () => {
+  showStatus('שומר...', 'info');
+  try {
+    weeksData._updated = new Date().toISOString().slice(0, 10);
+    const content = JSON.stringify(weeksData, null, 2);
+    const encoded = btoa(unescape(encodeURIComponent(content)));
+    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${TOKEN}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        message: 'עדכון זמינות שבתות',
+        content: encoded,
+        sha: fileSha,
+        branch: BRANCH,
+      }),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
+    const data = await res.json();
+    fileSha = data.content.sha;
+    showStatus('נשמר! האתר יתעדכן תוך דקה', 'success');
+  } catch (e) {
+    showStatus('שגיאה בשמירה: ' + e.message, 'error');
+  }
+});
+
+function showStatus(msg, type) {
+  document.getElementById('statusMsg').innerHTML = `<div class="status-msg status-${type}">${msg}</div>`;
+}
+</script>
+</body>
+</html>
