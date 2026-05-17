@@ -106,7 +106,7 @@
       <li><a href="#features" data-cursor="hover">מתקנים</a></li>
       <li><a href="#rooms" data-cursor="hover">החדרים</a></li>
       <li><a href="#gallery" data-cursor="hover">גלריה</a></li>
-      <li><a href="#location" data-cursor="hover">מיקום</a></li>
+      <li><a href="#booking" data-cursor="hover">זמינות</a></li>
       <li><a href="#contact" class="nav-cta" data-cursor="hover"><span>להזמנה</span></a></li>
     </ul>
     <button class="nav-toggle" id="navToggle" aria-label="תפריט">
@@ -482,6 +482,99 @@
     </div>
   </div>
 </section>
+
+<!-- Booking Calendar -->
+<section id="booking" class="section booking">
+  <div class="container">
+    <div class="section-header">
+      <img src="images/ai/divider_classical.svg" alt="" class="ornament-divider" aria-hidden="true">
+      <span class="section-eyebrow"><span></span> זמינות שבתות <span></span></span>
+      <h2 class="section-title">
+        <span class="line">בדקו זמינות</span>
+        <span class="line italic">לשבת הקרובה</span>
+      </h2>
+      <p class="section-sub">לחצו על שבת פנויה והשאירו פנייה</p>
+    </div>
+
+    <div class="booking-legend">
+      <span class="legend-item"><span class="legend-dot legend-available"></span> פנוי</span>
+      <span class="legend-item"><span class="legend-dot legend-booked"></span> תפוס</span>
+      <span class="legend-item"><span class="legend-dot legend-pending"></span> בבדיקה</span>
+    </div>
+
+    <div class="calendar-grid" id="calendarGrid">
+      <!-- Loaded by JS -->
+      <div class="calendar-loading">טוען זמינות...</div>
+    </div>
+  </div>
+</section>
+
+<!-- Inquiry Form Modal -->
+<div class="modal" id="inquiryModal" aria-hidden="true">
+  <div class="modal-backdrop"></div>
+  <div class="modal-card">
+    <button class="modal-close" id="modalClose" aria-label="סגור">&times;</button>
+    <span class="section-eyebrow"><span></span> פנייה <span></span></span>
+    <h3 class="modal-title">בקשת הזמנה</h3>
+    <p class="modal-sub" id="modalSub">השאירו פרטים ונחזור אליכם בהקדם</p>
+
+    <form id="inquiryForm" class="inquiry-form">
+      <input type="hidden" name="parsha" id="formParsha">
+      <input type="hidden" name="date" id="formDate">
+
+      <div class="form-row">
+        <label>
+          <span>שם מלא <em>*</em></span>
+          <input type="text" name="name" required placeholder="ישראל ישראלי">
+        </label>
+        <label>
+          <span>טלפון <em>*</em></span>
+          <input type="tel" name="phone" required placeholder="050-1234567">
+        </label>
+      </div>
+
+      <label>
+        <span>אימייל</span>
+        <input type="email" name="email" placeholder="email@example.com">
+      </label>
+
+      <div class="form-row">
+        <label>
+          <span>מספר אורחים</span>
+          <select name="guests">
+            <option>2 מבוגרים</option>
+            <option>2 מבוגרים + ילדים</option>
+            <option>3-4 מבוגרים</option>
+            <option>קבוצה גדולה</option>
+          </select>
+        </label>
+        <label>
+          <span>סעודות שבת</span>
+          <select name="meals">
+            <option>לא, נדאג בעצמנו</option>
+            <option>כן - אשמח לפרטים</option>
+            <option>אולי - תתקשרו</option>
+          </select>
+        </label>
+      </div>
+
+      <label>
+        <span>הערות נוספות</span>
+        <textarea name="message" rows="3" placeholder="כל מה שכדאי לדעת..."></textarea>
+      </label>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary btn-lg">
+          <span class="btn-text">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
+            שליחת בקשה
+          </span>
+        </button>
+      </div>
+      <p class="form-note">לחיצה על "שליחת בקשה" תפתח את תוכנת המייל עם הפרטים מוכנים לשליחה</p>
+    </form>
+  </div>
+</div>
 
 <!-- Pricing / CTA Strip -->
 <section class="section cta-strip">

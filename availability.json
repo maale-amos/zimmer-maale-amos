@@ -1,0 +1,26 @@
+{
+  "_doc": "סטטוס זמינות שבתות. ערוך ב-GitHub או דרך admin.html. status: available | booked | pending. friday_date בפורמט YYYY-MM-DD.",
+  "_updated": "2026-05-17",
+  "weeks": [
+    {"friday_date": "2026-05-22", "parsha": "במדבר", "status": "available", "note": ""},
+    {"friday_date": "2026-05-29", "parsha": "שבועות + נשא", "status": "available", "note": "חג השבועות"},
+    {"friday_date": "2026-06-05", "parsha": "בהעלותך", "status": "available", "note": ""},
+    {"friday_date": "2026-06-12", "parsha": "שלח לך", "status": "available", "note": ""},
+    {"friday_date": "2026-06-19", "parsha": "קרח", "status": "available", "note": ""},
+    {"friday_date": "2026-06-26", "parsha": "חוקת", "status": "available", "note": ""},
+    {"friday_date": "2026-07-03", "parsha": "בלק", "status": "available", "note": ""},
+    {"friday_date": "2026-07-10", "parsha": "פנחס", "status": "available", "note": ""},
+    {"friday_date": "2026-07-17", "parsha": "מטות-מסעי", "status": "available", "note": ""},
+    {"friday_date": "2026-07-24", "parsha": "דברים", "status": "available", "note": "שבת חזון"},
+    {"friday_date": "2026-07-31", "parsha": "ואתחנן", "status": "available", "note": "שבת נחמו"},
+    {"friday_date": "2026-08-07", "parsha": "עקב", "status": "available", "note": ""},
+    {"friday_date": "2026-08-14", "parsha": "ראה", "status": "available", "note": ""},
+    {"friday_date": "2026-08-21", "parsha": "שופטים", "status": "available", "note": ""},
+    {"friday_date": "2026-08-28", "parsha": "כי תצא", "status": "available", "note": ""},
+    {"friday_date": "2026-09-04", "parsha": "כי תבא", "status": "available", "note": ""},
+    {"friday_date": "2026-09-11", "parsha": "ניצבים-וילך", "status": "available", "note": ""},
+    {"friday_date": "2026-09-18", "parsha": "ראש השנה", "status": "available", "note": "תשפ\"ז"},
+    {"friday_date": "2026-09-25", "parsha": "וילך / שבת שובה", "status": "available", "note": ""},
+    {"friday_date": "2026-10-02", "parsha": "האזינו / יום כיפור", "status": "available", "note": ""}
+  ]
+}

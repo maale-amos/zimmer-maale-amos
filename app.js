@@ -349,6 +349,127 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 });
 
 // ======================================================
+// Booking Calendar
+// ======================================================
+const HEB_MONTHS = ['ינו׳','פבר׳','מרץ','אפר׳','מאי','יוני','יולי','אוג׳','ספט׳','אוק׳','נוב׳','דצמ׳'];
+const STATUS_TEXT = {
+  available: 'פנוי',
+  booked: 'תפוס',
+  pending: 'בבדיקה',
+};
+
+async function loadCalendar() {
+  const grid = document.getElementById('calendarGrid');
+  if (!grid) return;
+  try {
+    const res = await fetch('availability.json?t=' + Date.now());
+    const data = await res.json();
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const upcoming = data.weeks
+      .filter(w => new Date(w.friday_date) >= today)
+      .slice(0, 12);
+
+    if (!upcoming.length) {
+      grid.innerHTML = '<div class="calendar-loading">אין שבתות זמינות להצגה</div>';
+      return;
+    }
+
+    grid.innerHTML = upcoming.map(w => {
+      const d = new Date(w.friday_date);
+      const dayOfMonth = d.getDate();
+      const monthName = HEB_MONTHS[d.getMonth()];
+      const status = w.status || 'available';
+      const statusText = STATUS_TEXT[status] || 'פנוי';
+      return `
+        <button class="cal-cell ${status}" data-date="${w.friday_date}" data-parsha="${w.parsha}" data-status="${status}" ${status==='booked' ? 'disabled' : ''}>
+          <div class="cal-date">${dayOfMonth}</div>
+          <span class="cal-month">${monthName}</span>
+          <div class="cal-parsha">${w.parsha}</div>
+          <span class="cal-status">${statusText}</span>
+          ${w.note ? `<div class="cal-note">${w.note}</div>` : ''}
+        </button>
+      `;
+    }).join('');
+
+    grid.querySelectorAll('.cal-cell:not([disabled])').forEach(cell => {
+      cell.addEventListener('click', () => {
+        openInquiry(cell.dataset.date, cell.dataset.parsha, cell.dataset.status);
+      });
+    });
+  } catch (e) {
+    grid.innerHTML = '<div class="calendar-loading">שגיאה בטעינת לוח זמינות</div>';
+    console.error(e);
+  }
+}
+
+// ======================================================
+// Inquiry Modal
+// ======================================================
+function openInquiry(date, parsha, status) {
+  const modal = document.getElementById('inquiryModal');
+  document.getElementById('formDate').value = date;
+  document.getElementById('formParsha').value = parsha;
+  const statusText = status === 'pending' ? 'בבדיקה' : 'פנוי';
+  document.getElementById('modalSub').textContent = `שבת פרשת ${parsha} · ${date.split('-').reverse().join('/')} · ${statusText}`;
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeInquiry() {
+  const modal = document.getElementById('inquiryModal');
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+
+const inquiryModal = document.getElementById('inquiryModal');
+if (inquiryModal) {
+  document.getElementById('modalClose').addEventListener('click', closeInquiry);
+  inquiryModal.querySelector('.modal-backdrop').addEventListener('click', closeInquiry);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && inquiryModal.classList.contains('open')) closeInquiry();
+  });
+
+  document.getElementById('inquiryForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const f = e.target;
+    const data = Object.fromEntries(new FormData(f).entries());
+    const subject = `פנייה לצימר מעלה עמוס - ${data.parsha} (${data.date})`;
+    const body = [
+      `שלום אילה,`,
+      ``,
+      `הגיעה פנייה לצימר מעלה עמוס:`,
+      ``,
+      `📅 תאריך: ${data.date}`,
+      `📖 פרשת השבוע: ${data.parsha}`,
+      ``,
+      `👤 שם: ${data.name}`,
+      `📱 טלפון: ${data.phone}`,
+      `📧 אימייל: ${data.email || '-'}`,
+      ``,
+      `👥 אורחים: ${data.guests}`,
+      `🍽️ סעודות שבת: ${data.meals}`,
+      ``,
+      `📝 הערות:`,
+      `${data.message || '-'}`,
+      ``,
+      `---`,
+      `נשלח דרך אתר צימר מעלה עמוס`,
+    ].join('\n');
+
+    const mailto = `mailto:A0533177636@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailto;
+
+    setTimeout(() => {
+      f.innerHTML = '<div class="form-success"><strong>תודה!</strong><br>תוכנת המייל נפתחה - לחצו על "שלח" שם והפנייה תגיע אלינו.<br>נחזור אליכם בהקדם.</div>';
+    }, 500);
+  });
+}
+
+// ======================================================
 // Init
 // ======================================================
 renderGallery();
+loadCalendar();

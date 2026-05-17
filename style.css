@@ -1186,6 +1186,298 @@ details summary::-webkit-details-marker { display: none; }
 }
 
 /* ======================================================
+   Booking Calendar
+   ====================================================== */
+.booking {
+  background: linear-gradient(180deg, var(--c-cream) 0%, var(--c-cream-2) 100%);
+}
+
+.booking-legend {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--c-brown-soft);
+  font-weight: 500;
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.legend-available { background: #6db577; }
+.legend-booked { background: #c25450; }
+.legend-pending { background: #d4a04a; }
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.calendar-loading {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px;
+  color: var(--c-brown-soft);
+  font-style: italic;
+}
+
+.cal-cell {
+  background: var(--c-white);
+  border: 1.5px solid rgba(191, 149, 91, 0.18);
+  border-radius: var(--radius);
+  padding: 20px 18px;
+  cursor: pointer;
+  transition: all 0.3s var(--ease);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.cal-cell::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  height: 4px;
+  background: #6db577;
+}
+
+.cal-cell.booked::before { background: #c25450; }
+.cal-cell.pending::before { background: #d4a04a; }
+
+.cal-cell:hover:not(.booked) {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--c-gold);
+}
+
+.cal-cell.booked { cursor: not-allowed; opacity: 0.65; }
+
+.cal-date {
+  font-family: var(--f-display);
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--c-dark);
+  margin-bottom: 4px;
+  letter-spacing: -0.01em;
+}
+
+.cal-month {
+  font-family: var(--f-latin);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--c-gold);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.cal-parsha {
+  font-family: var(--f-display);
+  font-size: 17px;
+  color: var(--c-brown-deep);
+  font-weight: 600;
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+
+.cal-status {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 100px;
+  display: inline-block;
+  letter-spacing: 0.05em;
+}
+
+.cal-cell:not(.booked):not(.pending) .cal-status {
+  background: rgba(109, 181, 119, 0.15);
+  color: #4a7d52;
+}
+.cal-cell.booked .cal-status {
+  background: rgba(194, 84, 80, 0.15);
+  color: #8b2e2a;
+}
+.cal-cell.pending .cal-status {
+  background: rgba(212, 160, 74, 0.18);
+  color: #7a5a1e;
+}
+
+.cal-note {
+  font-size: 11px;
+  color: var(--c-brown-soft);
+  margin-top: 8px;
+  font-style: italic;
+  font-family: var(--f-script);
+}
+
+/* ======================================================
+   Modal / Form
+   ====================================================== */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal.open { display: flex; animation: fadeIn 0.3s; }
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(14, 9, 5, 0.7);
+  backdrop-filter: blur(12px);
+}
+
+.modal-card {
+  position: relative;
+  background: var(--c-cream);
+  border-radius: var(--radius-xl);
+  padding: 48px 40px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-xl);
+  z-index: 1;
+  animation: modalIn 0.5s var(--ease);
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(40px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modal-close {
+  position: absolute;
+  top: 16px;
+  inset-inline-end: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--c-cream-2);
+  font-size: 24px;
+  color: var(--c-brown);
+  display: grid;
+  place-items: center;
+  transition: var(--t-fast);
+}
+
+.modal-close:hover { background: var(--c-gold); color: var(--c-white); transform: rotate(90deg); }
+
+.modal-title {
+  font-family: var(--f-display);
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--c-dark);
+  margin-top: 12px;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+.modal-sub {
+  color: var(--c-brown-soft);
+  margin-bottom: 28px;
+  font-family: var(--f-script);
+  font-size: 16px;
+  font-style: italic;
+}
+
+.inquiry-form { display: grid; gap: 16px; }
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.inquiry-form label {
+  display: grid;
+  gap: 6px;
+}
+
+.inquiry-form label span {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--c-brown);
+  letter-spacing: 0.02em;
+}
+
+.inquiry-form label em {
+  color: var(--c-gold);
+  font-style: normal;
+}
+
+.inquiry-form input,
+.inquiry-form select,
+.inquiry-form textarea {
+  width: 100%;
+  padding: 13px 16px;
+  border: 1.5px solid rgba(191, 149, 91, 0.25);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: 15px;
+  background: var(--c-white);
+  color: var(--c-brown-deep);
+  transition: var(--t-fast);
+}
+
+.inquiry-form input:focus,
+.inquiry-form select:focus,
+.inquiry-form textarea:focus {
+  outline: none;
+  border-color: var(--c-gold);
+  box-shadow: 0 0 0 4px rgba(191, 149, 91, 0.12);
+}
+
+.inquiry-form textarea { resize: vertical; min-height: 80px; font-family: inherit; }
+
+.form-actions {
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+}
+
+.form-actions .btn { width: 100%; justify-content: center; }
+
+.form-note {
+  font-size: 12px;
+  color: var(--c-brown-soft);
+  text-align: center;
+  margin-top: 6px;
+  font-style: italic;
+}
+
+.form-success {
+  text-align: center;
+  padding: 24px;
+  background: rgba(109, 181, 119, 0.1);
+  border-radius: var(--radius);
+  color: #2e6b3a;
+  font-weight: 500;
+}
+
+/* ======================================================
    Experience
    ====================================================== */
 .experience {
