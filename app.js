@@ -432,39 +432,65 @@ if (inquiryModal) {
     if (e.key === 'Escape' && inquiryModal.classList.contains('open')) closeInquiry();
   });
 
-  document.getElementById('inquiryForm').addEventListener('submit', e => {
+  document.getElementById('inquiryForm').addEventListener('submit', async e => {
     e.preventDefault();
     const f = e.target;
     const data = Object.fromEntries(new FormData(f).entries());
     const subject = `פנייה לצימר מעלה עמוס - ${data.parsha} (${data.date})`;
-    const body = [
-      `שלום אילה,`,
-      ``,
-      `הגיעה פנייה לצימר מעלה עמוס:`,
-      ``,
-      `📅 תאריך: ${data.date}`,
-      `📖 פרשת השבוע: ${data.parsha}`,
-      ``,
-      `👤 שם: ${data.name}`,
-      `📱 טלפון: ${data.phone}`,
-      `📧 אימייל: ${data.email || '-'}`,
-      ``,
-      `👥 אורחים: ${data.guests}`,
-      `🍽️ סעודות שבת: ${data.meals}`,
-      ``,
-      `📝 הערות:`,
-      `${data.message || '-'}`,
-      ``,
-      `---`,
-      `נשלח דרך אתר צימר מעלה עמוס`,
-    ].join('\n');
 
-    const mailto = `mailto:A0533177636@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.location.href = mailto;
+    const submitBtn = f.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.querySelector('.btn-text').textContent = 'שולח...';
 
-    setTimeout(() => {
-      f.innerHTML = '<div class="form-success"><strong>תודה!</strong><br>תוכנת המייל נפתחה - לחצו על "שלח" שם והפנייה תגיע אלינו.<br>נחזור אליכם בהקדם.</div>';
-    }, 500);
+    const payload = {
+      _subject: subject,
+      _replyto: data.email || 'noreply@example.com',
+      _captcha: 'false',
+      _template: 'table',
+      'תאריך': data.date,
+      'פרשת השבוע': data.parsha,
+      'שם מלא': data.name,
+      'טלפון': data.phone,
+      'אימייל': data.email || '-',
+      'מספר אורחים': data.guests,
+      'סעודות שבת': data.meals,
+      'הערות': data.message || '-',
+    };
+
+    try {
+      const res = await fetch('https://formsubmit.co/ajax/A0533177636@gmail.com', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const result = await res.json();
+      if (result.success === 'true' || result.success === true) {
+        f.innerHTML = `<div class="form-success"><strong>הפנייה נשלחה!</strong><br>תודה שפניתם, נחזור אליכם בהקדם.<br><br><small>במידה ואין תשובה תוך 24 שעות - אנא התקשרו: <a href="tel:+972533177636" style="color:inherit;">053-317-7636</a></small></div>`;
+      } else {
+        throw new Error('send-failed');
+      }
+    } catch (err) {
+      // Fallback to mailto if FormSubmit fails
+      const body = [
+        `שלום,`,
+        ``,
+        `פנייה לצימר מעלה עמוס:`,
+        ``,
+        `📅 תאריך: ${data.date}`,
+        `📖 פרשה: ${data.parsha}`,
+        ``,
+        `👤 שם: ${data.name}`,
+        `📱 טלפון: ${data.phone}`,
+        `📧 אימייל: ${data.email || '-'}`,
+        ``,
+        `👥 אורחים: ${data.guests}`,
+        `🍽️ סעודות: ${data.meals}`,
+        ``,
+        `📝 הערות: ${data.message || '-'}`,
+      ].join('\n');
+      window.location.href = `mailto:A0533177636@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      f.innerHTML = `<div class="form-success"><strong>תוכנת המייל נפתחה</strong><br>שלחו את ההודעה משם.</div>`;
+    }
   });
 }
 
