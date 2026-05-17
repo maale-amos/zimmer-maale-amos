@@ -40,36 +40,7 @@ window.addEventListener('load', () => {
   }, 1400);
 });
 
-// ======================================================
-// Custom Cursor (desktop only)
-// ======================================================
-(function initCursor() {
-  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-  document.body.classList.add('has-cursor');
-
-  const cursor = document.getElementById('cursor');
-  const dot = document.getElementById('cursorDot');
-  let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
-
-  document.addEventListener('mousemove', e => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
-  });
-
-  function animateCursor() {
-    cursorX += (mouseX - cursorX) * 0.18;
-    cursorY += (mouseY - cursorY) * 0.18;
-    cursor.style.transform = `translate(${cursorX}px, ${cursorY}px) translate(-50%, -50%)`;
-    requestAnimationFrame(animateCursor);
-  }
-  animateCursor();
-
-  document.querySelectorAll('[data-cursor="hover"], a, button').forEach(el => {
-    el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-    el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-  });
-})();
+// Custom cursor removed per user feedback (kept default browser cursor)
 
 // ======================================================
 // Magnetic buttons

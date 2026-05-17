@@ -28,10 +28,14 @@
   --grad-cream: linear-gradient(180deg, #faf5ec 0%, #f4ecda 100%);
   --grad-glass: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
 
-  /* Typography - Boutique pairings */
-  --f-display: 'Frank Ruhl Libre', 'Playfair Display', Georgia, serif;
-  --f-script: 'Cormorant Garamond', 'Playfair Display', serif;
-  --f-elegant: 'Marcellus', 'Playfair Display', serif;
+  /* Typography - Premium boutique pairings */
+  --f-display: 'David Libre', 'Frank Ruhl Libre', 'Cinzel', Georgia, serif;
+  --f-display-heavy: 'Suez One', 'Frank Ruhl Libre', serif;
+  --f-latin-display: 'Cinzel Decorative', 'Cinzel', 'Playfair Display', serif;
+  --f-latin: 'Cinzel', 'Bellefair', serif;
+  --f-script: 'Cormorant Garamond', 'Bellefair', serif;
+  --f-signature: 'Pinyon Script', 'Great Vibes', cursive;
+  --f-elegant: 'Marcellus', 'Bellefair', serif;
   --f-body: 'Assistant', 'Heebo', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
   /* Layout */
@@ -184,40 +188,8 @@ details summary::-webkit-details-marker { display: none; }
   box-shadow: 0 0 10px rgba(191, 149, 91, 0.5);
 }
 
-/* ======================================================
-   Custom Cursor (desktop only)
-   ====================================================== */
-.cursor, .cursor-dot {
-  position: fixed;
-  top: 0; left: 0;
-  pointer-events: none;
-  z-index: 9998;
-  border-radius: 50%;
-  transition: transform 0.3s var(--ease), width 0.3s, height 0.3s, background 0.3s, opacity 0.3s;
-  opacity: 0;
-}
-
-.cursor {
-  width: 36px; height: 36px;
-  border: 1.5px solid var(--c-gold);
-  transform: translate(-50%, -50%);
-  mix-blend-mode: difference;
-}
-
-.cursor-dot {
-  width: 6px; height: 6px;
-  background: var(--c-gold);
-  transform: translate(-50%, -50%);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  body.has-cursor .cursor,
-  body.has-cursor .cursor-dot { opacity: 1; }
-  body.has-cursor * { cursor: none !important; }
-  body.has-cursor .cursor.hover { width: 70px; height: 70px; background: rgba(191, 149, 91, 0.15); }
-}
-
-@media (hover: none) { .cursor, .cursor-dot { display: none; } }
+/* Custom cursor disabled per user feedback - kept default cursor */
+.cursor, .cursor-dot { display: none !important; }
 
 /* ======================================================
    Navigation
@@ -282,13 +254,13 @@ details summary::-webkit-details-marker { display: none; }
   line-height: 1.1;
 }
 .logo-sub {
-  font-family: var(--f-elegant);
-  font-size: 10px;
-  font-weight: 400;
+  font-family: var(--f-latin-display);
+  font-size: 9px;
+  font-weight: 700;
   color: var(--c-gold-light);
-  letter-spacing: 0.32em;
+  letter-spacing: 0.4em;
   text-transform: uppercase;
-  margin-top: 3px;
+  margin-top: 4px;
   font-style: normal;
 }
 
@@ -460,26 +432,29 @@ details summary::-webkit-details-marker { display: none; }
 
 .hero-title-line {
   display: block;
-  font-family: var(--f-display);
-  font-size: clamp(54px, 10vw, 120px);
+  font-family: var(--f-display-heavy);
+  font-size: clamp(58px, 11vw, 130px);
+  font-weight: 900;
   background: linear-gradient(180deg, #ffffff 0%, #d9b787 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 8px 30px rgba(0, 0, 0, 0.4));
+  filter: drop-shadow(0 8px 30px rgba(0, 0, 0, 0.45));
+  letter-spacing: -0.01em;
 }
 
 .hero-title-script {
   display: block;
-  font-family: var(--f-script);
-  font-style: italic;
-  font-weight: 500;
-  font-size: clamp(20px, 2.8vw, 32px);
+  font-family: var(--f-signature);
+  font-style: normal;
+  font-weight: 400;
+  font-size: clamp(28px, 4vw, 46px);
   color: var(--c-gold-light);
-  letter-spacing: 0.18em;
-  margin-top: 14px;
-  opacity: 0.92;
+  letter-spacing: 0.04em;
+  margin-top: 18px;
+  opacity: 0.95;
   font-feature-settings: 'liga' 1, 'dlig' 1, 'swsh' 1;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
 
 .hero-sub {
@@ -529,10 +504,10 @@ details summary::-webkit-details-marker { display: none; }
 }
 .hero-stat-label {
   display: block;
-  font-family: var(--f-elegant);
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0.2em;
+  font-family: var(--f-latin);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
   color: rgba(250, 245, 236, 0.75);
   text-transform: uppercase;
   margin-top: 6px;
@@ -745,10 +720,10 @@ details summary::-webkit-details-marker { display: none; }
   display: inline-flex;
   align-items: center;
   gap: 14px;
-  font-family: var(--f-elegant);
-  font-size: 13px;
-  font-weight: 400;
-  letter-spacing: 0.42em;
+  font-family: var(--f-latin);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.48em;
   color: var(--c-gold);
   text-transform: uppercase;
   margin-bottom: 28px;
@@ -765,8 +740,8 @@ details summary::-webkit-details-marker { display: none; }
 
 .section-title {
   font-family: var(--f-display);
-  font-size: clamp(38px, 6vw, 72px);
-  font-weight: 800;
+  font-size: clamp(40px, 6.5vw, 80px);
+  font-weight: 700;
   line-height: 1.05;
   color: var(--c-dark);
   letter-spacing: -0.02em;
@@ -775,13 +750,24 @@ details summary::-webkit-details-marker { display: none; }
 .section-title.light { color: var(--c-cream); }
 .section-title.centered { text-align: center; }
 .section-title .line { display: block; }
+/* For Hebrew italic accent — use Frank Ruhl Italic / David Italic */
 .section-title .italic {
-  font-family: var(--f-script);
+  font-family: 'Cormorant Garamond', var(--f-display), serif;
   font-style: italic;
   font-weight: 500;
   color: var(--c-gold);
   font-feature-settings: 'liga' 1, 'dlig' 1, 'swsh' 1;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.005em;
+}
+
+/* English-only italics can use signature font */
+.section-title .signature {
+  font-family: var(--f-signature);
+  font-style: normal;
+  font-weight: 400;
+  color: var(--c-gold);
+  font-size: 1.3em;
+  line-height: 0.85;
 }
 
 .section-title.light .italic { color: var(--c-gold-light); }
@@ -831,7 +817,7 @@ details summary::-webkit-details-marker { display: none; }
 }
 
 .about-text .lead em {
-  font-family: var(--f-script);
+  font-family: 'Cormorant Garamond', var(--f-display), serif;
   font-style: italic;
   font-weight: 500;
   color: var(--c-gold);
@@ -1036,11 +1022,11 @@ details summary::-webkit-details-marker { display: none; }
 .feature-card > * { position: relative; z-index: 1; transition: color 0.4s; }
 
 .feature-num {
-  font-family: var(--f-elegant);
+  font-family: var(--f-latin-display);
   font-size: 13px;
-  font-weight: 400;
+  font-weight: 700;
   color: var(--c-gold);
-  letter-spacing: 0.3em;
+  letter-spacing: 0.35em;
   margin-bottom: 26px;
 }
 
@@ -1749,9 +1735,10 @@ details summary::-webkit-details-marker { display: none; }
 }
 
 .host-label {
-  font-family: var(--f-elegant);
-  font-size: 11px;
-  letter-spacing: 0.25em;
+  font-family: var(--f-latin);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  font-weight: 600;
 }
 
 .contact-actions {
