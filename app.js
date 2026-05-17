@@ -1,66 +1,192 @@
-// ====================================================
-// צימר מעלה עמוס - Site interactions
-// ====================================================
+// ======================================================
+// צימר מעלה עמוס · Site Interactions
+// ======================================================
 
-// All gallery photos - curated order. Hero/best first.
+// Gallery photos with categories for filters
 const GALLERY_IMAGES = [
-  { src: 'img_7433.jpg', alt: 'סלון מרווח ופינת אוכל עם שעון זהב' },
-  { src: 'img_7446.jpg', alt: 'חצר פרטית עם נדנדה ופרחים' },
-  { src: 'img_7429.jpg', alt: 'מטבח מאובזר' },
-  { src: 'img_7444.jpg', alt: 'יחידת הורים' },
-  { src: 'img_7438.jpg', alt: 'חדר ילדים עם 2 מיטות ועריסה' },
-  { src: 'img_7448.jpg', alt: 'חצר עם פרחים אדומים' },
-  { src: 'img_7427.jpg', alt: 'אזור אוכל' },
-  { src: 'img_7432.jpg', alt: 'סלון מרווח' },
-  { src: 'img_7458.jpg', alt: 'חדר שינה הורים' },
-  { src: 'img_7440.jpg', alt: 'מטבח עם פלטת שבת' },
-  { src: 'img_7456.jpg', alt: 'פינת קפה לשבת' },
-  { src: 'img_7453.jpg', alt: 'נדנדה בחצר' },
-  { src: 'img_7445.jpg', alt: 'חדר שינה עם איפור' },
-  { src: 'img_7450.jpg', alt: 'חצר עם מנגל' },
-  { src: 'img_7459.jpg', alt: 'פרטים מעוצבים' },
-  { src: 'img_7460.jpg', alt: 'שולחן איפור עם צמחים' },
-  { src: 'img_7452.jpg', alt: 'סלון עם ספריה' },
-  { src: 'img_7449.jpg', alt: 'גינה פורחת' },
-  { src: 'img_7447.jpg', alt: 'פינת ישיבה בחצר' },
-  { src: 'img_7454.jpg', alt: 'מבט אחורי לחצר' },
-  { src: 'img_7455.jpg', alt: 'חצר עם פינת אוכל חיצונית' },
-  { src: 'img_7457.jpg', alt: 'פינת קפה' },
-  { src: 'img_7431.jpg', alt: 'מבט כללי לסלון' },
-  { src: 'img_7466.jpg', alt: 'חדר נוסף' },
-  { src: 'img_7462.jpg', alt: 'חדר שינה' },
-  { src: 'img_7463.jpg', alt: 'מיטה זוגית' },
+  { src: 'img_7433.jpg', alt: 'סלון מרווח עם שעון זהב', cat: 'living', size: 'large' },
+  { src: 'img_7446.jpg', alt: 'חצר עם נדנדה ופרחים', cat: 'outdoor', size: '' },
+  { src: 'img_7429.jpg', alt: 'מטבח עם מפת ארץ ישראל', cat: 'kitchen', size: '' },
+  { src: 'img_7444.jpg', alt: 'יחידת הורים', cat: 'bedroom', size: '' },
+  { src: 'img_7438.jpg', alt: 'חדר ילדים עם 2 מיטות', cat: 'bedroom', size: 'wide' },
+  { src: 'img_7448.jpg', alt: 'גינה עם פרחים אדומים', cat: 'outdoor', size: '' },
+  { src: 'img_7427.jpg', alt: 'אזור אוכל ופינת ספרים', cat: 'living', size: '' },
+  { src: 'img_7432.jpg', alt: 'סלון מרווח', cat: 'living', size: '' },
+  { src: 'img_7458.jpg', alt: 'חדר שינה זוגי', cat: 'bedroom', size: '' },
+  { src: 'img_7440.jpg', alt: 'מטבח עם פלטת שבת', cat: 'kitchen', size: 'large' },
+  { src: 'img_7456.jpg', alt: 'פינת קפה לשבת', cat: 'kitchen', size: '' },
+  { src: 'img_7453.jpg', alt: 'נדנדה בחצר', cat: 'outdoor', size: '' },
+  { src: 'img_7445.jpg', alt: 'חדר שינה עם איפור', cat: 'bedroom', size: '' },
+  { src: 'img_7450.jpg', alt: 'חצר עם מנגל', cat: 'outdoor', size: '' },
+  { src: 'img_7459.jpg', alt: 'פרטים מעוצבים', cat: 'living', size: '' },
+  { src: 'img_7460.jpg', alt: 'שולחן איפור עם צמחים', cat: 'bedroom', size: '' },
+  { src: 'img_7452.jpg', alt: 'סלון עם ספריה', cat: 'living', size: 'wide' },
+  { src: 'img_7449.jpg', alt: 'גינה פורחת', cat: 'outdoor', size: '' },
+  { src: 'img_7447.jpg', alt: 'פינת ישיבה בחצר', cat: 'outdoor', size: '' },
+  { src: 'img_7454.jpg', alt: 'מבט אחורי לחצר', cat: 'outdoor', size: '' },
+  { src: 'img_7455.jpg', alt: 'חצר עם פינת אוכל חיצונית', cat: 'outdoor', size: '' },
+  { src: 'img_7457.jpg', alt: 'פינת קפה ומקרר', cat: 'kitchen', size: '' },
+  { src: 'img_7431.jpg', alt: 'מבט כללי לסלון', cat: 'living', size: '' },
+  { src: 'img_7466.jpg', alt: 'חדר שינה נוסף', cat: 'bedroom', size: '' },
 ];
 
-// ----- Navigation scroll behavior -----
-const nav = document.querySelector('.nav');
-const navLinks = document.querySelector('.nav-links');
-const navToggle = document.querySelector('.nav-toggle');
+// ======================================================
+// Loader
+// ======================================================
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('hide');
+    document.body.classList.add('loaded');
+  }, 1400);
+});
+
+// ======================================================
+// Custom Cursor (desktop only)
+// ======================================================
+(function initCursor() {
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  document.body.classList.add('has-cursor');
+
+  const cursor = document.getElementById('cursor');
+  const dot = document.getElementById('cursorDot');
+  let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
+
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+  });
+
+  function animateCursor() {
+    cursorX += (mouseX - cursorX) * 0.18;
+    cursorY += (mouseY - cursorY) * 0.18;
+    cursor.style.transform = `translate(${cursorX}px, ${cursorY}px) translate(-50%, -50%)`;
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+
+  document.querySelectorAll('[data-cursor="hover"], a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+  });
+})();
+
+// ======================================================
+// Magnetic buttons
+// ======================================================
+(function initMagnetic() {
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+  document.querySelectorAll('.magnetic').forEach(btn => {
+    btn.addEventListener('mousemove', e => {
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      const text = btn.querySelector('.btn-text');
+      btn.style.transform = `translate(${x * 0.15}px, ${y * 0.25}px)`;
+      if (text) text.style.transform = `translate(${x * 0.2}px, ${y * 0.3}px)`;
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transform = '';
+      const text = btn.querySelector('.btn-text');
+      if (text) text.style.transform = '';
+    });
+  });
+})();
+
+// ======================================================
+// Scroll Progress Bar
+// ======================================================
+(function initScrollProgress() {
+  const bar = document.getElementById('scrollProgress');
+  function update() {
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = (window.scrollY / h) * 100;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+
+// ======================================================
+// Navigation
+// ======================================================
+const nav = document.getElementById('nav');
+const navLinks = document.getElementById('navLinks');
+const navToggle = document.getElementById('navToggle');
 
 function updateNav() {
   if (window.scrollY > 50) nav.classList.add('scrolled');
   else nav.classList.remove('scrolled');
 }
-
 window.addEventListener('scroll', updateNav, { passive: true });
 updateNav();
 
 navToggle.addEventListener('click', () => {
+  navToggle.classList.toggle('open');
   navLinks.classList.toggle('open');
 });
 
-navLinks.addEventListener('click', (e) => {
+navLinks.addEventListener('click', e => {
   if (e.target.tagName === 'A') {
+    navToggle.classList.remove('open');
     navLinks.classList.remove('open');
   }
 });
 
-// ----- Gallery rendering -----
+// ======================================================
+// Hero Slideshow
+// ======================================================
+(function initHeroSlideshow() {
+  const slides = document.querySelectorAll('.hero-slide');
+  const indicators = document.querySelectorAll('.indicator');
+  let current = 0;
+  let timer;
+
+  function showSlide(idx) {
+    slides.forEach((s, i) => s.classList.toggle('active', i === idx));
+    indicators.forEach((d, i) => d.classList.toggle('active', i === idx));
+    current = idx;
+  }
+
+  function nextSlide() { showSlide((current + 1) % slides.length); }
+
+  function startTimer() {
+    clearInterval(timer);
+    timer = setInterval(nextSlide, 6000);
+  }
+
+  indicators.forEach((d, i) => {
+    d.addEventListener('click', () => { showSlide(i); startTimer(); });
+  });
+
+  startTimer();
+})();
+
+// ======================================================
+// Rooms Tabs
+// ======================================================
+(function initRoomsTabs() {
+  const tabs = document.querySelectorAll('.room-tab');
+  const contents = document.querySelectorAll('.room-content');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const idx = tab.dataset.room;
+      tabs.forEach(t => t.classList.toggle('active', t.dataset.room === idx));
+      contents.forEach(c => c.classList.toggle('active', c.dataset.room === idx));
+    });
+  });
+})();
+
+// ======================================================
+// Gallery
+// ======================================================
 const galleryGrid = document.getElementById('galleryGrid');
 
 function renderGallery() {
   const html = GALLERY_IMAGES.map((img, i) => `
-    <div class="gallery-item" data-index="${i}">
+    <div class="gallery-item ${img.size}" data-index="${i}" data-cat="${img.cat}">
       <img src="images/thumbs/${img.src}" alt="${img.alt}" loading="lazy">
       <div class="gallery-zoom">
         <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
@@ -76,14 +202,40 @@ function renderGallery() {
   });
 }
 
-// ----- Lightbox -----
+// Gallery filters
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    document.querySelectorAll('.gallery-item').forEach(item => {
+      const show = filter === 'all' || item.dataset.cat === filter;
+      item.classList.toggle('hidden', !show);
+    });
+  });
+});
+
+// ======================================================
+// Lightbox
+// ======================================================
 const lb = document.getElementById('lightbox');
 const lbImg = document.getElementById('lbImg');
 const lbCounter = document.getElementById('lbCounter');
+const lbCaption = document.getElementById('lbCaption');
 let lbIndex = 0;
+let visibleImages = [];
+
+function getVisibleImages() {
+  const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+  return GALLERY_IMAGES.filter(img => activeFilter === 'all' || img.cat === activeFilter);
+}
 
 function openLightbox(index) {
-  lbIndex = index;
+  visibleImages = getVisibleImages();
+  // Map original index to visible list
+  const img = GALLERY_IMAGES[index];
+  lbIndex = visibleImages.findIndex(v => v.src === img.src);
+  if (lbIndex < 0) lbIndex = 0;
   showLightbox();
   lb.classList.add('open');
   lb.setAttribute('aria-hidden', 'false');
@@ -97,19 +249,20 @@ function closeLightbox() {
 }
 
 function showLightbox() {
-  const img = GALLERY_IMAGES[lbIndex];
+  const img = visibleImages[lbIndex];
   lbImg.src = `images/gallery/${img.src}`;
   lbImg.alt = img.alt;
-  lbCounter.textContent = `${lbIndex + 1} / ${GALLERY_IMAGES.length}`;
+  lbCounter.textContent = `${lbIndex + 1} / ${visibleImages.length}`;
+  lbCaption.textContent = img.alt;
 }
 
 function nextLightbox() {
-  lbIndex = (lbIndex + 1) % GALLERY_IMAGES.length;
+  lbIndex = (lbIndex + 1) % visibleImages.length;
   showLightbox();
 }
 
 function prevLightbox() {
-  lbIndex = (lbIndex - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length;
+  lbIndex = (lbIndex - 1 + visibleImages.length) % visibleImages.length;
   showLightbox();
 }
 
@@ -117,57 +270,103 @@ document.querySelector('.lb-close').addEventListener('click', closeLightbox);
 document.querySelector('.lb-next').addEventListener('click', nextLightbox);
 document.querySelector('.lb-prev').addEventListener('click', prevLightbox);
 
-lb.addEventListener('click', (e) => {
-  if (e.target === lb) closeLightbox();
-});
+lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
 
-document.addEventListener('keydown', (e) => {
+document.addEventListener('keydown', e => {
   if (!lb.classList.contains('open')) return;
   if (e.key === 'Escape') closeLightbox();
-  // RTL aware - swap arrows
   if (e.key === 'ArrowLeft') nextLightbox();
   if (e.key === 'ArrowRight') prevLightbox();
 });
 
-// Touch swipe on lightbox image
+// Touch swipe
 let touchX = null;
-lb.addEventListener('touchstart', (e) => { touchX = e.touches[0].clientX; }, { passive: true });
-lb.addEventListener('touchend', (e) => {
+lb.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, { passive: true });
+lb.addEventListener('touchend', e => {
   if (touchX === null) return;
   const diff = e.changedTouches[0].clientX - touchX;
   if (Math.abs(diff) > 50) {
-    // RTL: swipe right = next, swipe left = prev
-    if (diff > 0) nextLightbox();
-    else prevLightbox();
+    if (diff > 0) nextLightbox(); else prevLightbox();
   }
   touchX = null;
 }, { passive: true });
 
-// ----- Scroll reveal -----
-function setupReveal() {
-  const selectors = ['.section-header', '.about-text', '.about-photo', '.feature-card', '.suitable-item', '.location-text', '.location-map', '.contact-card', '.gallery-item'];
-  const els = document.querySelectorAll(selectors.join(','));
-  els.forEach(el => el.classList.add('reveal'));
+// ======================================================
+// Scroll Reveal Animations
+// ======================================================
+(function initScrollReveal() {
+  const config = [
+    { sel: '.section-header', cls: 'scroll-reveal' },
+    { sel: '.about-text', cls: 'scroll-reveal-right' },
+    { sel: '.about-visual', cls: 'scroll-reveal-left' },
+    { sel: '.features-grid', cls: 'stagger' },
+    { sel: '.suitable-grid', cls: 'stagger' },
+    { sel: '.gallery-grid', cls: 'stagger' },
+    { sel: '.rooms-tabs', cls: 'scroll-reveal' },
+    { sel: '.cta-card', cls: 'scroll-reveal' },
+    { sel: '.location-text', cls: 'scroll-reveal-right' },
+    { sel: '.location-map-wrap', cls: 'scroll-reveal-left' },
+    { sel: '.faq-list', cls: 'stagger' },
+    { sel: '.contact-card', cls: 'scroll-reveal' },
+    { sel: '.footer-grid', cls: 'stagger' },
+  ];
 
-  const obs = new IntersectionObserver((entries) => {
+  config.forEach(({ sel, cls }) => {
+    document.querySelectorAll(sel).forEach(el => el.classList.add(cls));
+  });
+
+  const obs = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
         obs.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  }, { threshold: 0.1, rootMargin: '0px 0px -80px 0px' });
 
-  els.forEach(el => obs.observe(el));
-}
+  document.querySelectorAll('.scroll-reveal, .scroll-reveal-left, .scroll-reveal-right, .stagger').forEach(el => obs.observe(el));
+})();
 
-// Init
-renderGallery();
-setupReveal();
+// ======================================================
+// Number counter animation
+// ======================================================
+(function initCounters() {
+  const counters = document.querySelectorAll('[data-count]');
+  const animateCount = (el) => {
+    const target = parseInt(el.dataset.count, 10);
+    const duration = 1500;
+    const start = performance.now();
+    const original = el.textContent;
+    const suffix = original.replace(/\d/g, '');
 
-// ----- Smooth scroll for anchor links -----
+    function tick(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = Math.floor(target * eased);
+      el.textContent = current + (progress < 1 ? '' : suffix);
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  };
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateCount(entry.target);
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  counters.forEach(c => obs.observe(c));
+})();
+
+// ======================================================
+// Smooth scroll
+// ======================================================
 document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', (e) => {
+  a.addEventListener('click', e => {
     const id = a.getAttribute('href').slice(1);
     if (!id) return;
     const target = document.getElementById(id);
@@ -177,3 +376,8 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     }
   });
 });
+
+// ======================================================
+// Init
+// ======================================================
+renderGallery();
