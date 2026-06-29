@@ -1,0 +1,6 @@
+photos_new/
+_shot_*.png
+process_photos.py
+sort_photos.py
+screenshot_v4.py
+download_photos.py
