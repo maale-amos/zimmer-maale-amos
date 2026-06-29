@@ -2,7 +2,7 @@
   {
     "file": "img_7452.jpg",
     "cat": "living",
-    "alt": "סלון ופינת אוכל"
+    "alt": "סלון מרכזי"
   },
   {
     "file": "img_7446.jpg",
@@ -22,7 +22,7 @@
   {
     "file": "img_7451.jpg",
     "cat": "living",
-    "alt": "פינת אוכל"
+    "alt": "פינת ישיבה"
   },
   {
     "file": "img_7448.jpg",
@@ -106,7 +106,7 @@
   },
   {
     "file": "img_7440.jpg",
-    "cat": "kitchen",
+    "cat": "detail",
     "alt": "מטבח"
   },
   {
