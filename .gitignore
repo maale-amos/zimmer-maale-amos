@@ -4,3 +4,4 @@ process_photos.py
 sort_photos.py
 screenshot_v4.py
 download_photos.py
+send_email.py
